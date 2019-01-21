@@ -195,9 +195,18 @@ const router = new Router({
 //     return
 //   }
 
-//   let toKen = localStorage.getItem('token')
-//   if (toKen) {
-//     next()
+//   let uxerRole = localStorage.getItem('uxerRole')
+
+//   if (uxerRole === '营销人员') {
+//     next({ path: '/' })
+//   } else if (uxerRole === '分公司审批人员') {
+//     next({ path: '/branch-office/my-tasks' })
+//   } else if (uxerRole === '市公司审批领导') {
+//     next({ path: '/branch-office/my-tasks' })
+//   } else if (uxerRole === '支撑部门领导审批') {
+//     next({ path: '/department-office/my-tasks' })
+//   } else if (uxerRole === '支撑人员') {
+//     next({ path: '/personnel-office/my-tasks' })
 //   } else {
 //     next('/login')
 //   }

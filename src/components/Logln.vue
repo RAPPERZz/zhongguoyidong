@@ -84,19 +84,49 @@ export default {
       } = res
       if (errcode == 2000) {
         // localStorage.setItem('token', token)
-        this.$router.push({
-          path: '/'
-        })
+        await this.getUserInfo()
+        // this.$router.push({
+        //   path: '/'
+        // })
+        this.userPower()
       }
       if (errcode == 4802) {
+        this.captcha_versoin++
         this.$message.error('用户名或密码错误')
-        this.$message.error(message)
+        // this.$message.error(message)
         return
       }
       if (errcode == 3003) {
         this.captcha_versoin++
         this.$message.error('验证码错误')
         return
+      }
+    },
+    //获取用户信息
+    async getUserInfo() {
+      let res = await this.axios({
+        method: 'get',
+        url: '/user/getUsersData'
+      })
+      if (res.data.errcode == 2000) {
+        this.$store.commit('getUserInfo', res.data.data)
+        localStorage.setItem('uxerName', res.data.data.user_name)
+        localStorage.setItem('uxerRole', res.data.data.role)
+        console.log(res)
+      }
+    },
+    //用户权限判断
+    userPower() {
+      if (this.$store.state.users.role === '营销人员') {
+        this.$router.push({ path: '/index' })
+      } else if (localStorage.getItem('uxerRole') === '分公司审批人员') {
+        this.$router.push({ path: '/branch-office/my-tasks' })
+      } else if (localStorage.getItem('uxerRole') === '市公司审批领导') {
+        this.$router.push({ path: '/branch-office/my-tasks' })
+      } else if (localStorage.getItem('uxerRole') === '支撑部门领导审批') {
+        this.$router.push({ path: '/department-office/my-tasks' })
+      } else if (localStorage.getItem('uxerRole') === '支撑人员') {
+        this.$router.push({ path: '/personnel-office/my-tasks' })
       }
     }
   }

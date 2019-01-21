@@ -12,7 +12,7 @@ axios.interceptors.response.use(
       response.data.message == '登录令牌无效' &&
       response.data.errcode == 4802
     ) {
-      _this.$router.push('login')
+      _this.$router.push('/login')
       // console.log(_this.$router)
     }
     return response

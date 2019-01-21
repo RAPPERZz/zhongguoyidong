@@ -1,12 +1,12 @@
 <template>
-  <div id="app" @getUserInFo="getUser">
+  <div id="app">
     <!-- 右侧导航 -->
-    <div class="nav-menu" v-if="$route.meta.isTab">
+    <div class="nav-menu" v-if="$route.meta.userType">
       <div class="title">
         <h5>建模取数平台</h5>
       </div>
       <div class="menu">
-        <ul v-if="$route.meta.userType == 1">
+        <ul v-if="this.$store.state.users.role === '营销人员' ">
           <li :class="$route.meta.type == 'index' ? 'active':''" @click="$router.push({path:'/'})">
             <span>模型库</span>
           </li>
@@ -26,31 +26,64 @@
             <span>应用统计</span>
           </li>
         </ul>
-
-        <ul v-if="$route.meta.userType == 2">
+        <!-- 分公司领导 -->
+        <ul v-else-if="this.$store.state.users.role||uxerRole === '分公司审批人员' ">
           <li
             :class="$route.meta.type == 'branch-my-tasks' ? 'active':''"
             @click="$router.push({path:'/branch-office/my-tasks'})"
           >
             <span>我的工作</span>
           </li>
+          <li
+            :class="$route.meta.type == 'tasks' ? 'active':''"
+            @click="$router.push({path:'/tasks'})"
+          >
+            <span>任务查看</span>
+          </li>
         </ul>
-
-        <ul v-if="$route.meta.userType == 3">
+        <!-- 市公司领导 -->
+        <ul v-else-if="this.$store.state.users.role||uxerRole === '市公司审批领导' ">
+          <li
+            :class="$route.meta.type == 'branch-my-tasks' ? 'active':''"
+            @click="$router.push({path:'/branch-office/my-tasks'})"
+          >
+            <span>我的工作</span>
+          </li>
+          <li
+            :class="$route.meta.type == 'tasks' ? 'active':''"
+            @click="$router.push({path:'/tasks'})"
+          >
+            <span>任务查看</span>
+          </li>
+        </ul>
+        <!-- 支撑部门领导 -->
+        <ul v-else-if="this.$store.state.users.role||uxerRole === '支撑部门领导审批' ">
           <li
             :class="$route.meta.type == 'department-my-tasks' ? 'active':''"
             @click="$router.push({path:'/department-office/my-tasks'})"
           >
             <span>我的工作</span>
           </li>
+          <li
+            :class="$route.meta.type == 'tasks' ? 'active':''"
+            @click="$router.push({path:'/tasks'})"
+          >
+            <span>任务查看</span>
+          </li>
         </ul>
-
-        <ul v-if="$route.meta.userType == 4">
+        <!-- 支配支撑人员 -->
+        <ul v-else-if="this.$store.state.users.role||uxerRole === '支撑人员'">
           <li
             :class="$route.meta.type == 'personnel-my-tasks' ? 'active':''"
             @click="$router.push({path:'/personnel-office/my-tasks'})"
           >
             <span>我的工作</span>
+          </li>
+          <li
+            :class="$route.meta.type == 'tasks' ? 'active':''"
+            @click="$router.push({path:'/tasks'})"
+          >
+            <span>任务查看</span>
           </li>
         </ul>
       </div>
@@ -155,7 +188,7 @@
       <div class="user pointer" @mouseover="show_user_opt = true" @mouseout="show_user_opt = false">
         <img class="avatar" src="./assets/img/logo.png" alt>
         <!-- v-on:getUserInFo="getUserInFo" -->
-        <span class="nickname">用户名</span>
+        <span class="nickname">{{this.$store.state.users.user_name||userName}}</span>
         <div class="user_opt" v-show="show_user_opt">
           <div class="opt">
             <span>修改密码</span>
@@ -179,22 +212,31 @@ export default {
     return {
       value: [],
       show_user_opt: false,
-      userS: {}
+
+      // this.$store.state.users.user_name
+      // this.$store.state.users.role
+      //localStorage.getItem('uxerName')
+      //localStorage.getItem('uxerRole')
+      userName: localStorage.getItem('uxerName'),
+      uxerRole: localStorage.getItem('uxerRole')
     }
   },
   methods: {
-    getUser(msg) {
-      this.userS = msg
-      console.log(this.userS)
-    }
-    // getUserInFo: function(userInFo) {
-    //   // childValue就是子组件传过来的值
-    //   console.log(userInFo)
-    //   this.userName = userInFo
-    // },
-    // qwer() {
-    //   console.log(this.$refs.index)
+    // async getUserInfo() {
+    //   let res = await this.axios({
+    //     method: 'get',
+    //     url: '/user/getUsersData'
+    //   })
+    //   if (res.data.errcode == 2000) {
+    //     this.userName = res.data.data.user_name
+    //     this.uxerRole = res.data.data.role
+    //     // console.log(res)
+    //   }
     // }
+  },
+  created() {
+    // this.getUserInfo()
+    // console.log(this.$store.state.users)
   }
 }
 </script>

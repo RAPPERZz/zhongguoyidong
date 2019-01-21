@@ -109,29 +109,23 @@ export default {
   data() {
     return {
       value: '',
-      keyword: '',
-      user: {}
+      keyword: ''
     }
   },
   computed: {
     //计算属性
   },
   methods: {
-    //获取用户信息
     async getUserInfo() {
       let res = await this.axios({
         method: 'get',
         url: '/user/getUsersData'
       })
-      console.log(res)
       if (res.data.errcode == 2000) {
-        this.user = res.data.data
-        // console.log(this.user)
-        this.$emit('getUserInFo', this.user)
+        console.log(res)
       }
     }
   },
-
   created() {
     this.getUserInfo()
   }

@@ -9,11 +9,12 @@
             mode="horizontal"
             @select="handleSelect"
           >
+            @click="this.$refs.setStater()"
+            @click="this.$refs.setStater('0')"
             <el-menu-item index="1">所有任务</el-menu-item>
             <el-menu-item index="2">待审核</el-menu-item>
             <el-menu-item index="3">被驳回</el-menu-item>
             <el-menu-item index="4">待运算</el-menu-item>
-            <el-menu-item index="5">待确认</el-menu-item>
             <el-menu-item index="6">待评价</el-menu-item>
             <el-menu-item index="7">已完成</el-menu-item>
           </el-menu>

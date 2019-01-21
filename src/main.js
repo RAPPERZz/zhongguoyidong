@@ -9,12 +9,15 @@ import '../src/assets/css/element-ui.css'
 import '../src/assets/css/element-variables.scss'
 import '@/assets/css/reset.css'
 import '@/assets/iconfont/iconfont.css'
+import vuex from 'vuex'
+import store from './vuex/store'
 
 //二次封装axios
 import cAxios from './fun/cAxios'
 Vue.prototype.axios = cAxios
 
 Vue.use(ElementUI)
+Vue.use(vuex)
 
 Vue.config.productionTip = false
 
@@ -42,6 +45,7 @@ Vue.config.productionTip = false
 
 let myApp = new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')
 export default myApp

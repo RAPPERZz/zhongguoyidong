@@ -49,9 +49,7 @@ export default {
   beforeCreate() {
     //组建实例被创建，组建属性计算之前
   },
-  created() {
-    //组建实例创建完成，属性已绑定，但DOM还未生成
-  },
+  created() {},
   beforeMount() {
     //模版编译挂载之前
   },
